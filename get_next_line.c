@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 13:01:42 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/02 12:08:29 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/03 14:41:40 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
-/*
+
 char *get_next_line(int fd)
 {
 	static char *buf;
-	size_t = s;
 
 	buf = malloc(BUFFER_SIZE);
     if (buf == NULL)
@@ -26,7 +25,7 @@ char *get_next_line(int fd)
 	s = read(fd, buf, BUFFER_SIZE);
 
 }
-*/
+
 int main(void)
 {
     int     fd;
