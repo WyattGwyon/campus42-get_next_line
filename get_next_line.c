@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 13:01:42 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/03 20:49:42 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/04 20:12:01 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ int ft_lengto(char *str)
 
 char *get_next_line(int fd)
 {
-	static char	*buff;
-	int			len;
+	static t_buffer	buff;
 	char 		*newln;
 	int			i;
 	
