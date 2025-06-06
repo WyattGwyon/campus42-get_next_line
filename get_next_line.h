@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 20:17:13 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/04 20:13:46 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/06 19:01:01 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 #include <stddef.h>
 
 typedef struct s_buffer{
-	char	*buffer;
-	size_t 	pos;
+	char	buff[BUFFER_SIZE + 1];
+	size_t 	i;
 } t_buffer;
 
 char	*get_next_line(int fd);
