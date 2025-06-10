@@ -70,3 +70,31 @@ char	*ft_grow_line(char *newln, char *buff)
 	}
 	return (newmem);
 }
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned long long	pattern;
+	int					blocks;
+	int					remaining;
+	int					i;
+
+	blocks = n / 8;
+	remaining = n % 8;
+	pattern = (unsigned char)c;
+	pattern |= pattern << 8;
+	pattern |= pattern << 16;
+	pattern |= pattern << 32;
+	i = 0;
+	while (i < blocks)
+	{
+		((unsigned long long *)s)[i] = pattern;
+		i++;
+	}
+	i = 0;
+	while (i < remaining)
+	{
+		((unsigned char *)s)[(blocks * 8) + i] = (unsigned char)c;
+		i++;
+	}
+	return ((void *)s);
+}

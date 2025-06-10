@@ -23,28 +23,40 @@ char	*get_next_line(int fd)
 		return (NULL);
 	i = 0;
 	newln = NULL;
-	if (!b.buff[b.i])
+	if (b.buff[b.i] == '\0')
 	{
 		bytes = read(fd, b.buff, BUFFER_SIZE);
 		if (!bytes)
 			return (0);
 		b.i = 0;
+		newln = ft_grow_line(newln, &b.buff[b.i]);
+		if (!newln)
+			return (NULL);
 	}
-	newln = ft_grow_line(newln, &b.buff[b.i]);
-	if (!newln)
-		return (NULL);
+	else if (i == 0)
+	{
+		newln = ft_grow_line(newln, &b.buff[b.i]);
+		if (!newln)
+			return (NULL);
+	}
 	while (b.buff[b.i] != '\n')
 	{
 		newln[i] = b.buff[b.i];
 		b.i++;
 		i++;
-		if (!b.buff[b.i])
+		if (b.buff[b.i] == '\0')
 		{
 			bytes = read(fd, b.buff, BUFFER_SIZE);
 			if (!bytes)
 				return (0);
 			b.i = 0;
-			newln = ft_grow_line(newln, b.buff);
+			newln = ft_grow_line(newln, &b.buff[b.i]);
+			if (!newln)
+				return (NULL);
+		}
+		else if (i == 0)
+		{
+			newln = ft_grow_line(newln, &b.buff[b.i]);
 			if (!newln)
 				return (NULL);
 		}
@@ -53,7 +65,7 @@ char	*get_next_line(int fd)
 	b.i++;
 	return (newln);
 }
-/*
+
 int	main(void)
 {
 	int		fd;
@@ -71,4 +83,4 @@ int	main(void)
 	close(fd);
 	return (0);
 }
-*/
+
