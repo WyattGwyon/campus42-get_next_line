@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:21:36 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/10 13:21:41 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/10 17:15:23 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,31 @@ char	*get_next_line(int fd)
 	if (BUFFER_SIZE <= 0)
 		return (NULL);
 	i = 0;
-	newln = NULL;
+	newln = ft_calloc(0, sizeof(char));
 	if (b.buff[b.i] == '\0')
 	{
 		bytes = read(fd, b.buff, BUFFER_SIZE);
 		if (!bytes)
+		{
+			free(newln);
 			return (0);
+		}
 		b.i = 0;
 		newln = ft_grow_line(newln, &b.buff[b.i]);
 		if (!newln)
+		{
+			free(newln);
 			return (NULL);
+		}
 	}
 	else if (i == 0)
 	{
 		newln = ft_grow_line(newln, &b.buff[b.i]);
 		if (!newln)
+		{
+			free(newln);
 			return (NULL);
+		}
 	}
 	while (b.buff[b.i] != '\n')
 	{
@@ -48,17 +57,26 @@ char	*get_next_line(int fd)
 		{
 			bytes = read(fd, b.buff, BUFFER_SIZE);
 			if (!bytes)
+			{
+				free(newln);
 				return (0);
+			}
 			b.i = 0;
 			newln = ft_grow_line(newln, &b.buff[b.i]);
 			if (!newln)
+			{
+				free(newln);
 				return (NULL);
+			}
 		}
 		else if (i == 0)
 		{
 			newln = ft_grow_line(newln, &b.buff[b.i]);
 			if (!newln)
+			{
+				free(newln);
 				return (NULL);
+			}
 		}
 	}
 	newln[i] = b.buff[b.i];
@@ -83,4 +101,3 @@ int	main(void)
 	close(fd);
 	return (0);
 }
-
