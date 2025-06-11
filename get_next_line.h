@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 20:17:13 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/09 15:14:41 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/10 20:19:42 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ char	*get_next_line(int fd);
 int		ft_lengto(char *str);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_grow_line(char *newln, char *buff);
+void	*ft_memset(void *s, int c, size_t n);
 
 #endif

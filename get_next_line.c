@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:21:36 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/10 17:15:23 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/11 21:42:06 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ char	*get_next_line(int fd)
 	int				i;
 	size_t			bytes;
 
-	if (BUFFER_SIZE <= 0)
-		return (NULL);
+	if (BUFFER_SIZE <= 0 || fd < 0)
+    	return (NULL);
 	i = 0;
 	newln = ft_calloc(0, sizeof(char));
-	if (b.buff[b.i] == '\0')
+	//vv start
+    if (b.buff[b.i] == '\0')
 	{
-		bytes = read(fd, b.buff, BUFFER_SIZE);
-		if (!bytes)
+		ft_memset(b.buff, 0, BUFFER_SIZE);
+        bytes = read(fd, b.buff, BUFFER_SIZE);
+		if (bytes < 1)
 		{
 			free(newln);
 			return (0);
@@ -48,15 +50,18 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 	}
+    //^^ end
 	while (b.buff[b.i] != '\n')
 	{
 		newln[i] = b.buff[b.i];
 		b.i++;
 		i++;
+        //vv start
 		if (b.buff[b.i] == '\0')
 		{
+            ft_memset(b.buff, 0, BUFFER_SIZE);
 			bytes = read(fd, b.buff, BUFFER_SIZE);
-			if (!bytes)
+			if (bytes < 1)
 			{
 				free(newln);
 				return (0);
@@ -78,6 +83,7 @@ char	*get_next_line(int fd)
 				return (NULL);
 			}
 		}
+        //^^ end
 	}
 	newln[i] = b.buff[b.i];
 	b.i++;
@@ -101,3 +107,4 @@ int	main(void)
 	close(fd);
 	return (0);
 }
+
