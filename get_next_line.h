@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 20:17:13 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/10 20:19:42 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/11 23:40:28 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ typedef struct s_buffer
 	char	buff[BUFFER_SIZE + 1];
 	size_t	i;
 }	t_buffer;
+
+typedef struct s_line
+{
+    char    newln;
+    int     i;
+}   t_line;
 
 char	*get_next_line(int fd);
 int		ft_lengto(char *str);

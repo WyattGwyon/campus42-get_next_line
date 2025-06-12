@@ -6,24 +6,17 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:21:36 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/11 21:42:06 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/12 11:54:50 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
-{
-	static t_buffer	b;
-	char			*newln;
-	int				i;
-	size_t			bytes;
+static t_buffer	b;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
-    	return (NULL);
-	i = 0;
-	newln = ft_calloc(0, sizeof(char));
-	//vv start
+char *ft_make_buffers(char *newln, int i, int fd)
+{
+    int bytes;
     if (b.buff[b.i] == '\0')
 	{
 		ft_memset(b.buff, 0, BUFFER_SIZE);
@@ -50,6 +43,23 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 	}
+    return (newln);
+}
+
+char	*get_next_line(int fd)
+{
+	char			*newln;
+	int				i;
+
+	if (BUFFER_SIZE <= 0 || fd < 0)
+    	return (NULL);
+	i = 0;
+	newln = ft_calloc(0, sizeof(char));
+	//vv start
+    newln = ft_make_buffers(newln, i, fd);
+    if (!newln)
+        return (NULL);
+
     //^^ end
 	while (b.buff[b.i] != '\n')
 	{
@@ -57,32 +67,9 @@ char	*get_next_line(int fd)
 		b.i++;
 		i++;
         //vv start
-		if (b.buff[b.i] == '\0')
-		{
-            ft_memset(b.buff, 0, BUFFER_SIZE);
-			bytes = read(fd, b.buff, BUFFER_SIZE);
-			if (bytes < 1)
-			{
-				free(newln);
-				return (0);
-			}
-			b.i = 0;
-			newln = ft_grow_line(newln, &b.buff[b.i]);
-			if (!newln)
-			{
-				free(newln);
-				return (NULL);
-			}
-		}
-		else if (i == 0)
-		{
-			newln = ft_grow_line(newln, &b.buff[b.i]);
-			if (!newln)
-			{
-				free(newln);
-				return (NULL);
-			}
-		}
+        newln = ft_make_buffers(newln, i, fd);
+        if (!newln)
+            return (NULL);
         //^^ end
 	}
 	newln[i] = b.buff[b.i];
