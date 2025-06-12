@@ -38,7 +38,7 @@ typedef struct s_line
 char	*get_next_line(int fd);
 int		ft_lengto(char *str);
 void	*ft_calloc(size_t count, size_t size);
-char	*ft_grow_line(char *newln, char *buff);
+char	*ft_grow_line(char *newln, size_t i, char *buff);
 void	*ft_memset(void *s, int c, size_t n);
 
 #endif

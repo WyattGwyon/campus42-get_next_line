@@ -6,7 +6,7 @@
 /*   By: clouden <clouden@student.42madrid.com      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 13:21:36 by clouden           #+#    #+#             */
-/*   Updated: 2025/06/12 11:54:50 by clouden          ###   ########.fr       */
+/*   Updated: 2025/06/12 12:40:06 by clouden          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_buffer	b;
 
-char *ft_make_buffers(char *newln, int i, int fd)
+char *ft_make_buffers(char *newln, size_t i, int fd)
 {
     int bytes;
     if (b.buff[b.i] == '\0')
@@ -22,12 +22,14 @@ char *ft_make_buffers(char *newln, int i, int fd)
 		ft_memset(b.buff, 0, BUFFER_SIZE);
         bytes = read(fd, b.buff, BUFFER_SIZE);
 		if (bytes < 1)
-		{
+		{	
+			if (newln)
+				return (newln);
 			free(newln);
 			return (0);
 		}
 		b.i = 0;
-		newln = ft_grow_line(newln, &b.buff[b.i]);
+		newln = ft_grow_line(newln, i, &b.buff[b.i]);
 		if (!newln)
 		{
 			free(newln);
@@ -36,7 +38,7 @@ char *ft_make_buffers(char *newln, int i, int fd)
 	}
 	else if (i == 0)
 	{
-		newln = ft_grow_line(newln, &b.buff[b.i]);
+		newln = ft_grow_line(newln, i, &b.buff[b.i]);
 		if (!newln)
 		{
 			free(newln);
@@ -49,12 +51,12 @@ char *ft_make_buffers(char *newln, int i, int fd)
 char	*get_next_line(int fd)
 {
 	char			*newln;
-	int				i;
+	size_t				i;
 
 	if (BUFFER_SIZE <= 0 || fd < 0)
     	return (NULL);
 	i = 0;
-	newln = ft_calloc(0, sizeof(char));
+	newln = ft_calloc(1, sizeof(char));
 	//vv start
     newln = ft_make_buffers(newln, i, fd);
     if (!newln)
@@ -65,12 +67,13 @@ char	*get_next_line(int fd)
 	{
 		newln[i] = b.buff[b.i];
 		b.i++;
-		i++;
+		
         //vv start
         newln = ft_make_buffers(newln, i, fd);
         if (!newln)
             return (NULL);
         //^^ end
+		i++;
 	}
 	newln[i] = b.buff[b.i];
 	b.i++;
@@ -82,7 +85,7 @@ int	main(void)
 	int		fd;
 	char	*newln;
 
-	fd = open("titus.txt", O_RDONLY);
+	fd = open("files/41_no_nl", O_RDONLY);
 	newln = get_next_line(fd);
 	printf("%s", newln);
 	while (newln)
@@ -94,4 +97,3 @@ int	main(void)
 	close(fd);
 	return (0);
 }
-

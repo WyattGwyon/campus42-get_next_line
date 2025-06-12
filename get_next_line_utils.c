@@ -48,17 +48,16 @@ void	*ft_calloc(size_t count, size_t size)
 	return (mem);
 }
 
-char	*ft_grow_line(char *newln, char *buff)
+char	*ft_grow_line(char *newln, size_t i, char *buff)
 {
 	char	*newmem;
 	size_t	len;
-	int		i;
 
 	len = ft_lengto(newln) + ft_lengto(buff);
 	newmem = ft_calloc(len + 1, sizeof(char));
 	if (newmem == NULL)
 		return (NULL);
-	if (newln)
+	if (newln[i])
 	{
 		i = 0;
 		while (newln[i])
