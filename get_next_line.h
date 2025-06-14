@@ -25,7 +25,7 @@
 
 typedef struct s_buffer
 {
-	char	buff[BUFFER_SIZE + 1];
+	char	buff;
 	size_t	i;
 }	t_buffer;
 

@@ -17,9 +17,11 @@ static t_buffer	b;
 char *ft_make_buffers(char *newln, size_t i, int fd)
 {
     int bytes;
+	if (b.buff == NULL)
+		b.buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
     if (b.buff[b.i] == '\0')
 	{
-		ft_memset(b.buff, 0, BUFFER_SIZE);
+		b.buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
         bytes = read(fd, b.buff, BUFFER_SIZE);
 		if (bytes < 1)
 		{	
@@ -57,7 +59,6 @@ char	*get_next_line(int fd)
     	return (NULL);
 	i = 0;
 	newln = ft_calloc(1, sizeof(char));
-	//vv start
     newln = ft_make_buffers(newln, i, fd);
     if (!newln)
         return (NULL);
@@ -80,17 +81,3 @@ char	*get_next_line(int fd)
 	return (newln);
 }
 
-int	main(void)
-{
-	int		fd;
-	char	*newln;
-
-	fd = open("files/text", O_RDONLY);
-	while ((newln = get_next_line(fd)) != NULL)
-	{
-		printf("%s", newln);
-		free(newln);
-	}
-	close(fd);
-	return (0);
-}
