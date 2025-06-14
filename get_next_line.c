@@ -85,15 +85,12 @@ int	main(void)
 	int		fd;
 	char	*newln;
 
-	fd = open("files/41_no_nl", O_RDONLY);
-	newln = get_next_line(fd);
-	printf("%s", newln);
-	while (newln)
+	fd = open("files/text", O_RDONLY);
+	while ((newln = get_next_line(fd)) != NULL)
 	{
-		newln = get_next_line(fd);
 		printf("%s", newln);
+		free(newln);
 	}
-	free(newln);
 	close(fd);
 	return (0);
 }
