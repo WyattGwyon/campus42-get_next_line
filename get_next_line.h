@@ -25,17 +25,18 @@
 
 typedef struct s_buffer
 {
-	char	buff;
-	size_t	i;
+	char	*buff;
+    char    *line;
+    char    *rest;
+	size_t	bi;
+    size_t  bytes;
+    size_t  li;
+    size_t  len;
 }	t_buffer;
 
-typedef struct s_line
-{
-    char    newln;
-    int     i;
-}   t_line;
 
 char	*get_next_line(int fd);
+int     start_up(int fd, t_buffer *s);
 int		ft_lengto(char *str);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_grow_line(char *newln, size_t i, char *buff);

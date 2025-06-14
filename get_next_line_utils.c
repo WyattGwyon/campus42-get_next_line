@@ -14,7 +14,7 @@
 
 int	ft_lengto(char *str)
 {
-	int	len;
+	size_t	len;
 
 	if (!str)
 		return (0);
@@ -97,3 +97,35 @@ void	*ft_memset(void *s, int c, size_t n)
 	}
 	return ((void *)s);
 }
+
+int start_up(int fd, t_buffer *s)
+{
+	if (BUFFER_SIZE != 0 || fd < 0)
+    	return (0);
+	if(!s->rest)
+		s->rest = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!s->rest)
+		return (0);
+	if (!s->buff)
+		s->buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!s->buff)
+	{
+		free(s->rest);
+		s->rest = NULL;
+		return (0);
+	}
+	return (1);
+} 
+
+/*
+char *start_up(int fd, t_buffer s)
+{
+	if (BUFFER_SIZE <= 0 || fd < 0)
+		return (NULL);
+	if (!s.buff)
+		s.buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!s.buff)
+		 return (NULL);
+	return (s.buff)
+}
+*/

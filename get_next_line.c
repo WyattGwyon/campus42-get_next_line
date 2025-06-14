@@ -12,72 +12,34 @@
 
 #include "get_next_line.h"
 
-static t_buffer	b;
-
-char *ft_make_buffers(char *newln, size_t i, int fd)
-{
-    int bytes;
-	if (b.buff == NULL)
-		b.buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-    if (b.buff[b.i] == '\0')
-	{
-		b.buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-        bytes = read(fd, b.buff, BUFFER_SIZE);
-		if (bytes < 1)
-		{	
-			if (newln)
-				return (newln);
-			free(newln);
-			return (0);
-		}
-		b.i = 0;
-		newln = ft_grow_line(newln, i, &b.buff[b.i]);
-		if (!newln)
-		{
-			free(newln);
-			return (NULL);
-		}
-	}
-	else if (i == 0)
-	{
-		newln = ft_grow_line(newln, i, &b.buff[b.i]);
-		if (!newln)
-		{
-			free(newln);
-			return (NULL);
-		}
-	}
-    return (newln);
-}
-
 char	*get_next_line(int fd)
 {
-	char			*newln;
-	size_t				i;
+	static t_buffer	s;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
-    	return (NULL);
-	i = 0;
-	newln = ft_calloc(1, sizeof(char));
-    newln = ft_make_buffers(newln, i, fd);
-    if (!newln)
-        return (NULL);
-
-    //^^ end
-	while (b.buff[b.i] != '\n')
-	{
-		newln[i] = b.buff[b.i];
-		b.i++;
-		
-        //vv start
-        newln = ft_make_buffers(newln, i, fd);
-        if (!newln)
-            return (NULL);
-        //^^ end
-		i++;
-	}
-	newln[i] = b.buff[b.i];
-	b.i++;
-	return (newln);
+	if(!start_up(fd, &s))
+		return (NULL);
+	//return (s.line);
+	
+	while((s.bytes = read(fd, s.buff, BUFFER_SIZE)))
+		return (s.buff);
+	s.line = create_line(&s);
+	free(s.buff);
+	s.buff = NULL;
+	return (NULL);
+	//s.buff = start_up(fd, s);	
 }
 
+int	main(void)
+{
+	int		fd;
+	char	*newln;
+
+	fd = open("shortitus.txt", O_RDONLY);
+	while ((newln = get_next_line(fd)) != NULL)
+	{
+		printf("%s", newln);
+		free(newln);
+	}
+	close(fd);
+	return (0);
+}
