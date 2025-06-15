@@ -16,17 +16,30 @@ char	*get_next_line(int fd)
 {
 	static t_buffer	s;
 
-	if(!start_up(fd, &s))
+	if(!ft_buffer_up(fd, &s))
 		return (NULL);
-	//return (s.line);
-	
-	while((s.bytes = read(fd, s.buff, BUFFER_SIZE)))
-		return (s.buff);
-	s.line = create_line(&s);
-	free(s.buff);
-	s.buff = NULL;
-	return (NULL);
-	//s.buff = start_up(fd, s);	
+	if (!s.bytes)
+		return (ft_end(&s));
+	if (!(s.next = ft_grow_line(&s)))
+		return (NULL);
+	while (s.buff && s.buff[s.b] != '\n')
+	{
+		s.next[s.n] = s.buff[s.b];
+		s.b++;
+		s.n++;
+		if (s.buff[s.b] == '\0')
+		{
+			if(!ft_buffer_up(fd, &s))
+				return (NULL);
+			if (!s.bytes)
+				return (ft_end(&s));
+			if (!(s.next = ft_grow_line(&s)))
+				return (NULL);
+		}
+	}
+	s.next[s.n] = s.buff[s.b];
+	s.b++;
+	return (s.next);
 }
 
 int	main(void)
@@ -38,7 +51,7 @@ int	main(void)
 	while ((newln = get_next_line(fd)) != NULL)
 	{
 		printf("%s", newln);
-		free(newln);
+		//free(newln);
 	}
 	close(fd);
 	return (0);

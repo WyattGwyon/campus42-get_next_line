@@ -26,20 +26,20 @@
 typedef struct s_buffer
 {
 	char	*buff;
-    char    *line;
-    char    *rest;
-	size_t	bi;
+    char    *next;
+	size_t	b;
     size_t  bytes;
-    size_t  li;
+    size_t  n;
     size_t  len;
+    int     eof;
 }	t_buffer;
 
 
 char	*get_next_line(int fd);
-int     start_up(int fd, t_buffer *s);
-int		ft_lengto(char *str);
-void	*ft_calloc(size_t count, size_t size);
-char	*ft_grow_line(char *newln, size_t i, char *buff);
+int     ft_lengto(char *str);
+char	*ft_grow_line(t_buffer *s);
 void	*ft_memset(void *s, int c, size_t n);
+int     ft_buffer_up(int fd, t_buffer *s);
+char	*ft_end(t_buffer *s);
 
 #endif

@@ -29,43 +29,30 @@ int	ft_lengto(char *str)
 	return (len);
 }
 
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*mem;
-	size_t	i;
-
-	i = 0;
-	if (count == 0 || size == 0)
-		return (malloc(0));
-	mem = malloc(count * size);
-	if (!mem)
-		return (NULL);
-	while (i < (count * size))
-	{
-		((unsigned char *)mem)[i] = 0;
-		i++;
-	}
-	return (mem);
-}
-
-char	*ft_grow_line(char *newln, size_t i, char *buff)
+char	*ft_grow_line(t_buffer *s)
 {
 	char	*newmem;
-	size_t	len;
 
-	len = ft_lengto(newln) + ft_lengto(buff);
-	newmem = ft_calloc(len + 1, sizeof(char));
+	if (s->next && s->next[s->n] == '\n')
+	{
+		free(s->next);
+		s->next = NULL;
+	}
+	s->len = ft_lengto(s->next) + ft_lengto(&s->buff[s->b]);
+	newmem = malloc(s->len + 1);
 	if (newmem == NULL)
 		return (NULL);
-	if (newln[i])
+	newmem = ft_memset(newmem, 0, s->len + 1);
+	if (s->next && s->next[s->n])
 	{
-		i = 0;
-		while (newln[i])
+		s->n = 0;
+		while (s->next[s->n])
 		{
-			newmem[i] = newln[i];
-			i++;
+			newmem[s->n] = s->next[s->n];
+			s->n++;
 		}
-		free(newln);
+		free(s->next);
+		s->next = NULL;
 	}
 	return (newmem);
 }
@@ -98,34 +85,38 @@ void	*ft_memset(void *s, int c, size_t n)
 	return ((void *)s);
 }
 
-int start_up(int fd, t_buffer *s)
-{
-	if (BUFFER_SIZE != 0 || fd < 0)
-    	return (0);
-	if(!s->rest)
-		s->rest = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!s->rest)
-		return (0);
-	if (!s->buff)
-		s->buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!s->buff)
-	{
-		free(s->rest);
-		s->rest = NULL;
-		return (0);
-	}
-	return (1);
-} 
-
-/*
-char *start_up(int fd, t_buffer s)
+int ft_buffer_up(int fd, t_buffer *s)
 {
 	if (BUFFER_SIZE <= 0 || fd < 0)
-		return (NULL);
-	if (!s.buff)
-		s.buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!s.buff)
-		 return (NULL);
-	return (s.buff)
+    	return (0);
+	if (!s->buff)
+	{
+		s->buff = malloc(BUFFER_SIZE + 1);
+		s->b = 0;
+		if (!s->buff)
+			return (0);
+	}
+	if (s->buff[s->b] == 0 || s->b == 0)
+	{
+		s->b = 0;
+		s->buff = ft_memset(s->buff, 0, BUFFER_SIZE + 1);
+		s->bytes = read(fd, s->buff, BUFFER_SIZE);
+	}
+	return (1);
 }
-*/
+
+
+char	*ft_end(t_buffer *s)
+{
+	if (s->eof == 1)
+		return (NULL);
+	s->eof = 1;
+	free(s->buff);
+	s->buff = NULL;
+	if (s->next && !s->next[0])
+	{
+		free(s->next);
+		s->next = NULL;
+	}
+	return (s->next);
+}
