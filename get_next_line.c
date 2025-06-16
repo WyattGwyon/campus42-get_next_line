@@ -47,7 +47,7 @@ int	main(void)
 	int		fd;
 	char	*newln;
 
-	fd = open("shortitus.txt", O_RDONLY);
+	fd = open("files/41_with_nl", O_RDONLY);
 	while ((newln = get_next_line(fd)) != NULL)
 	{
 		printf("%s", newln);

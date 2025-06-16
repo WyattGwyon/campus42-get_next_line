@@ -90,12 +90,21 @@ int ft_buffer_up(int fd, t_buffer *s)
 {	
 	if (BUFFER_SIZE <= 0 || fd < 0)
     	return (0);
+	if (s->eof == 1)
+	{
+		free(s->buff);
+		s->buff = NULL;
+		free(s->next);
+		s->next = NULL;
+		return (0);
+	}
 	if (!s->buff)
 	{
 		s->buff = malloc(BUFFER_SIZE + 1);
 		s->b = 0;
 		if (!s->buff)
 			return (0);
+		s->buff = ft_memset(s->buff, 0, BUFFER_SIZE + 1);
 	}
 	if (s->buff[s->b] == 0 || s->b == 0)
 	{
@@ -127,3 +136,57 @@ char	*ft_end(t_buffer *s)
 	}
 	return (s->next);
 }
+/*
+int ft_buffer_up(int fd, t_buffer *s)
+{	
+	if (BUFFER_SIZE <= 0 || fd < 0)
+    	return (0);
+	if (s->eof == 1)
+		return (ft_end(s));
+	if (!s->buff)
+	{
+		s->buff = malloc(BUFFER_SIZE + 1);
+		s->b = 0;
+		if (!s->buff)
+			return (0);
+	}
+	if (s->buff[s->b] == 0 || s->b == 0)
+	{
+		s->b = 0;
+		s->buff = ft_memset(s->buff, 0, BUFFER_SIZE + 1);
+		s->bytes = read(fd, s->buff, BUFFER_SIZE);
+	}
+	if (!s->bytes)
+		return(ft_end(s));
+	return (1);
+}
+
+
+char	*ft_end(t_buffer *s)
+{
+	if (s->eof == 1)
+	{
+		if (s->buff)
+		{
+			free(s->buff);
+			s->buff = NULL;
+		}
+		if (s->next)
+		{
+			free(s->next);
+			s->next = NULL;
+		}
+		return (NULL);
+	}
+	s->eof = 1;
+	free(s->buff);
+	s->buff = NULL;
+	if (s->next && !s->next[0])
+	{
+		free(s->next);
+		s->next = NULL;
+	}
+	return (s->next);
+}
+
+*/
