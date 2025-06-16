@@ -35,6 +35,7 @@ char	*ft_grow_line(t_buffer *s)
 
 	if (s->next && s->next[s->n] == '\n')
 	{
+		s->n = 0;
 		free(s->next);
 		s->next = NULL;
 	}
