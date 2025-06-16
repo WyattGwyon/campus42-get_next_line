@@ -51,8 +51,9 @@ int	main(void)
 	while ((newln = get_next_line(fd)) != NULL)
 	{
 		printf("%s", newln);
-		//free(newln);
+		
 	}
+	free(newln);
 	close(fd);
 	return (0);
 }

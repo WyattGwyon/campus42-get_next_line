@@ -44,7 +44,7 @@ char	*ft_grow_line(t_buffer *s)
 	if (newmem == NULL)
 		return (NULL);
 	newmem = ft_memset(newmem, 0, s->len + 1);
-	if (s->next && s->next[s->n])
+	if (s->next && s->next[0])
 	{
 		s->n = 0;
 		while (s->next[s->n])
@@ -87,7 +87,7 @@ void	*ft_memset(void *s, int c, size_t n)
 }
 
 int ft_buffer_up(int fd, t_buffer *s)
-{
+{	
 	if (BUFFER_SIZE <= 0 || fd < 0)
     	return (0);
 	if (!s->buff)
@@ -110,7 +110,13 @@ int ft_buffer_up(int fd, t_buffer *s)
 char	*ft_end(t_buffer *s)
 {
 	if (s->eof == 1)
+	{
+		free(s->buff);
+		s->buff = NULL;
+		free(s->next);
+		s->next = NULL;
 		return (NULL);
+	}
 	s->eof = 1;
 	free(s->buff);
 	s->buff = NULL;
