@@ -16,17 +16,19 @@ char	*get_next_line(int fd)
 {
 	static t_buffer	s;
 
+	if (s.eof == 1)
+		return (ft_end(&s));
 	if(!ft_buffer_up(fd, &s))
 		return (NULL);
 	if (!s.bytes)
 		return (ft_end(&s));
-	if (!(s.next = ft_grow_line(&s)))
+	s.next = ft_grow_line(&s);
+	if (!s.next)
 		return (NULL);
 	while (s.buff && s.buff[s.b] != '\n')
 	{
 		s.next[s.n] = s.buff[s.b];
 		s.b++;
-		s.n++;
 		if (s.buff[s.b] == '\0')
 		{
 			if(!ft_buffer_up(fd, &s))
@@ -35,25 +37,27 @@ char	*get_next_line(int fd)
 				return (ft_end(&s));
 			if (!(s.next = ft_grow_line(&s)))
 				return (NULL);
+			s.n--;
 		}
+		s.n++;
 	}
 	s.next[s.n] = s.buff[s.b];
 	s.b++;
 	return (s.next);
 }
 
-int	main(void)
-{
-	int		fd;
-	char	*newln;
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*newln;
 
-	fd = open("files/41_with_nl", O_RDONLY);
-	while ((newln = get_next_line(fd)) != NULL)
-	{
-		printf("%s", newln);
+// 	fd = open("files/alternate_line_nl_no_nl", O_RDONLY);
+// 	while ((newln = get_next_line(fd)) != NULL)
+// 	{
+// 		printf("%s", newln);
 		
-	}
-	free(newln);
-	close(fd);
-	return (0);
-}
+// 	}
+// 	free(newln);
+// 	close(fd);
+// 	return (0);
+// }
