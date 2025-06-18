@@ -69,18 +69,18 @@ char	*get_next_line(int fd)
 	return (kk);
 }
 
-int	main(void)
-{
-	int		fd;
-	char	*newln;
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*newln;
 
-	fd = open("read.txt", O_RDONLY);
-	while ((newln = get_next_line(fd)) != NULL)
-	{
-		printf("%s", newln);
+// 	fd = open("read.txt", O_RDONLY);
+// 	while ((newln = get_next_line(fd)) != NULL)
+// 	{
+// 		printf("%s", newln);
 		
-	}
-	free(newln);
-	close(fd);
-	return (0);
-}
+// 	}
+// 	free(newln);
+// 	close(fd);
+// 	return (0);
+// }
