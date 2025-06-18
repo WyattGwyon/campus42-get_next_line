@@ -15,13 +15,28 @@
 char	*get_next_line(int fd)
 {
 	static t_buffer	s;
+	char 			*kk;
 
 	if (s.eof == 1)
-		return (ft_end(&s));
+	{
+		ft_end(&s);
+		if (s.next)
+			kk = strdup(s.next);
+		else
+			kk = NULL;
+		return (kk);
+	}
 	if(!ft_buffer_up(fd, &s))
 		return (NULL);
 	if (!s.bytes)
-		return (ft_end(&s));
+	{
+		ft_end(&s);
+		if (s.next)
+			kk = strdup(s.next);
+		else
+			kk = NULL;
+		return (kk);
+	}
 	s.next = ft_grow_line(&s);
 	if (!s.next)
 		return (NULL);
@@ -34,7 +49,14 @@ char	*get_next_line(int fd)
 			if(!ft_buffer_up(fd, &s))
 				return (NULL);
 			if (!s.bytes)
-				return (ft_end(&s));
+			{
+				ft_end(&s);
+				if (s.next)
+					kk = strdup(s.next);
+				else
+					kk = NULL;
+				return (kk);
+			}
 			if (!(s.next = ft_grow_line(&s)))
 				return (NULL);
 			s.n--;
@@ -43,21 +65,22 @@ char	*get_next_line(int fd)
 	}
 	s.next[s.n] = s.buff[s.b];
 	s.b++;
-	return (s.next);
+	kk = strdup(s.next);
+	return (kk);
 }
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*newln;
+int	main(void)
+{
+	int		fd;
+	char	*newln;
 
-// 	fd = open("files/alternate_line_nl_no_nl", O_RDONLY);
-// 	while ((newln = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", newln);
+	fd = open("read.txt", O_RDONLY);
+	while ((newln = get_next_line(fd)) != NULL)
+	{
+		printf("%s", newln);
 		
-// 	}
-// 	free(newln);
-// 	close(fd);
-// 	return (0);
-// }
+	}
+	free(newln);
+	close(fd);
+	return (0);
+}
