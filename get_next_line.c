@@ -12,34 +12,57 @@
 
 #include "get_next_line.h"
 
+char	*ft_nullout(t_buffer *s, char **out)
+{
+	if (s->buff)
+	{
+		free(s->buff);
+		s->buff = NULL;
+	}
+	if (s->next)
+	{
+		free(s->buff);
+		s->next = NULL;
+	}
+	if (out && *out)
+	{
+		free(*out);
+		*out = NULL;
+	}
+	return (NULL);
+}
+
 char	*get_next_line(int fd)
 {
 	static t_buffer	s;
-	char 			*kk;
+	char 			*out;
 
+	out = NULL;
 	if (s.eof == 1)
 	{
 		ft_end(&s);
 		if (s.next)
-			kk = strdup(s.next);
+			out = strdup(s.next);
 		else
-			kk = NULL;
-		return (kk);
+			out = NULL;
+		return (out);
 	}
 	if(!ft_buffer_up(fd, &s))
-		return (NULL);
-	if (!s.bytes)
+		return (ft_nullout(&s, &out));
+	if (s.bytes == 0)
 	{
 		ft_end(&s);
 		if (s.next)
-			kk = strdup(s.next);
+			out = strdup(s.next);
 		else
-			kk = NULL;
-		return (kk);
+			out = NULL;
+		return (out);
 	}
+	if (s.bytes == -1)
+		return (ft_nullout(&s, &out));
 	s.next = ft_grow_line(&s);
 	if (!s.next)
-		return (NULL);
+		return (ft_nullout(&s, &out));
 	while (s.buff && s.buff[s.b] != '\n')
 	{
 		s.next[s.n] = s.buff[s.b];
@@ -47,26 +70,26 @@ char	*get_next_line(int fd)
 		if (s.buff[s.b] == '\0')
 		{
 			if(!ft_buffer_up(fd, &s))
-				return (NULL);
+				return (ft_nullout(&s, &out));
 			if (!s.bytes)
 			{
 				ft_end(&s);
 				if (s.next)
-					kk = strdup(s.next);
+					out = strdup(s.next);
 				else
-					kk = NULL;
-				return (kk);
+					out = NULL;
+				return (out);
 			}
 			if (!(s.next = ft_grow_line(&s)))
-				return (NULL);
+				return (ft_nullout(&s, &out));
 			s.n--;
 		}
 		s.n++;
 	}
 	s.next[s.n] = s.buff[s.b];
 	s.b++;
-	kk = strdup(s.next);
-	return (kk);
+	out = strdup(s.next);
+	return (out);
 }
 
 // int	main(void)

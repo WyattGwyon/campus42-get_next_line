@@ -88,7 +88,7 @@ void	*ft_memset(void *s, int c, size_t n)
 
 int ft_buffer_up(int fd, t_buffer *s)
 {	
-	if (BUFFER_SIZE <= 0 || fd < 0 || read(fd, NULL, 0) == -1)
+	if (BUFFER_SIZE <= 0 || fd < 0)
     	return (0);
 	if (!s->buff)
 	{
