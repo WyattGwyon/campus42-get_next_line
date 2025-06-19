@@ -12,6 +12,20 @@
 
 #include "get_next_line.h"
 
+char	*ft_phase_ctrl(int fd, t_buffer *s)
+{
+	if (s->eof == 1)
+		return (ft_end(s));
+	if (!ft_buffer_up(fd, s))
+		return (NULL);
+	if (!s->bytes)
+		return (ft_end(s));
+	s->next = ft_grow_line(s);
+	if (!s->next)
+		return (NULL);
+	return (s->next);
+}
+
 char	*ft_nullout(t_buffer *s, char **out)
 {
 	if (s->buff)
@@ -35,28 +49,32 @@ char	*ft_nullout(t_buffer *s, char **out)
 char	*get_next_line(int fd)
 {
 	static t_buffer	s;
-	char 			*out;
+	char			*out;
 
 	out = NULL;
 	if (s.eof == 1)
 	{
 		ft_end(&s);
 		if (s.next)
+		{
 			out = strdup(s.next);
+			return (out);
+		}
 		else
-			out = NULL;
-		return (out);
+			return (ft_nullout(&s, &out));
 	}
-	if(!ft_buffer_up(fd, &s))
+	if (!ft_buffer_up(fd, &s))
 		return (ft_nullout(&s, &out));
 	if (s.bytes == 0)
 	{
 		ft_end(&s);
 		if (s.next)
+		{
 			out = strdup(s.next);
+			return (out);
+		}
 		else
-			out = NULL;
-		return (out);
+			return (ft_nullout(&s, &out));
 	}
 	if (s.bytes == -1)
 		return (ft_nullout(&s, &out));
@@ -69,18 +87,21 @@ char	*get_next_line(int fd)
 		s.b++;
 		if (s.buff[s.b] == '\0')
 		{
-			if(!ft_buffer_up(fd, &s))
+			if (!ft_buffer_up(fd, &s))
 				return (ft_nullout(&s, &out));
 			if (!s.bytes)
 			{
 				ft_end(&s);
 				if (s.next)
+				{
 					out = strdup(s.next);
+					return (out);
+				}
 				else
-					out = NULL;
-				return (out);
+					return (ft_nullout(&s, &out));
 			}
-			if (!(s.next = ft_grow_line(&s)))
+			s.next = ft_grow_line(&s);
+			if (!s.next)
 				return (ft_nullout(&s, &out));
 			s.n--;
 		}
@@ -96,12 +117,10 @@ char	*get_next_line(int fd)
 // {
 // 	int		fd;
 // 	char	*newln;
-
 // 	fd = open("read.txt", O_RDONLY);
 // 	while ((newln = get_next_line(fd)) != NULL)
 // 	{
-// 		printf("%s", newln);
-		
+// 		printf("%s", newln);	
 // 	}
 // 	free(newln);
 // 	close(fd);

@@ -86,10 +86,10 @@ void	*ft_memset(void *s, int c, size_t n)
 	return ((void *)s);
 }
 
-int ft_buffer_up(int fd, t_buffer *s)
-{	
+int	ft_buffer_up(int fd, t_buffer *s)
+{
 	if (BUFFER_SIZE <= 0 || fd < 0)
-    	return (0);
+		return (0);
 	if (!s->buff)
 	{
 		s->buff = malloc(BUFFER_SIZE + 1);
@@ -109,26 +109,6 @@ int ft_buffer_up(int fd, t_buffer *s)
 }
 
 /*
-char	*ft_end(t_buffer *s)
-{
-	if (s->eof == 1)
-	{
-		free(s->buff);
-		s->buff = NULL;
-		free(s->next);
-		s->next = NULL;
-		return (NULL);
-	}
-	s->eof = 1;
-	free(s->buff);
-	s->buff = NULL;
-	if (s->next && !s->next[0])
-	{
-		free(s->next);
-		s->next = NULL;
-	}
-	return (s->next);
-}
 
 int ft_buffer_up(int fd, t_buffer *s)
 {	
@@ -183,28 +163,3 @@ char	*ft_end(t_buffer *s)
 	}
 	return (s->next);
 }
-/*
-ft_bufflow
-ft_buffer_flow
-ft_buffer_phase
-ft_phaser
-ft_phase_ctrl()
-ft_beg_mid_end()
-ft_set_res_end()
-ft_stage_ctrl()
-
-
-char *ft_stage_ctrl(int fd, t_buffer *s)
-{
-	if (s->eof == 1)
-		return (ft_end(s));
-	if(!ft_buffer_up(fd, s))
-		return (NULL);
-	if (!s->bytes)
-		return (ft_end(s));
-	s->next = ft_grow_line(s);
-	if (!s->next)
-		return (NULL);
-	return (s->next);
-}
-*/
