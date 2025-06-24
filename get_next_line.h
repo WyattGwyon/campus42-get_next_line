@@ -23,8 +23,6 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# include <string.h>
-
 typedef struct s_buffer
 {
 	char	*buff;
@@ -38,9 +36,10 @@ typedef struct s_buffer
 
 char	*get_next_line(int fd);
 int		ft_lengto(char *str);
-char	*ft_grow_line(t_buffer *s);
+char	*ft_grow_line(t_buffer *s, char * next);
 void	*ft_memset(void *s, int c, size_t n);
 int		ft_buffer_up(int fd, t_buffer *s);
 char	*ft_end(t_buffer *s);
+char	*ft_nullout(t_buffer *s, char **next);
 
 #endif

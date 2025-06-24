@@ -29,31 +29,26 @@ int	ft_lengto(char *str)
 	return (len);
 }
 
-char	*ft_grow_line(t_buffer *s)
+char	*ft_grow_line(t_buffer *s, char *next)
 {
 	char	*newmem;
+	int		n;
 
-	if (s->next && s->next[s->n] == '\n')
-	{
-		s->n = 0;
-		free(s->next);
-		s->next = NULL;
-	}
-	s->len = ft_lengto(s->next) + ft_lengto(&s->buff[s->b]);
+	n = 0;
+	s->len = ft_lengto(next) + ft_lengto(&s->buff[s->b]);
 	newmem = malloc(s->len + 1);
 	if (newmem == NULL)
 		return (NULL);
-	newmem = ft_memset(newmem, 0, s->len + 1);
-	if (s->next && s->next[0])
+	ft_memset(newmem, 0, s->len + 1);
+	if (next && next[0])
 	{
-		s->n = 0;
-		while (s->next[s->n])
+		while (next[n])
 		{
-			newmem[s->n] = s->next[s->n];
-			s->n++;
+			newmem[n] = next[n];
+			n++;
 		}
-		free(s->next);
-		s->next = NULL;
+		free(next);
+		next = NULL;
 	}
 	return (newmem);
 }
@@ -98,7 +93,7 @@ int	ft_buffer_up(int fd, t_buffer *s)
 			return (0);
 		s->buff = ft_memset(s->buff, 0, BUFFER_SIZE + 1);
 	}
-	if (s->buff[s->b] == 0 || s->b == 0)
+	if (s->buff && (s->buff[s->b] == 0 || s->b == 0))
 	{
 		s->b = 0;
 		if (s->buff[0])
@@ -107,33 +102,6 @@ int	ft_buffer_up(int fd, t_buffer *s)
 	}
 	return (1);
 }
-
-/*
-
-int ft_buffer_up(int fd, t_buffer *s)
-{	
-	if (BUFFER_SIZE <= 0 || fd < 0)
-    	return (0);
-	if (s->eof == 1)
-		return (ft_end(s));
-	if (!s->buff)
-	{
-		s->buff = malloc(BUFFER_SIZE + 1);
-		s->b = 0;
-		if (!s->buff)
-			return (0);
-	}
-	if (s->buff[s->b] == 0 || s->b == 0)
-	{
-		s->b = 0;
-		s->buff = ft_memset(s->buff, 0, BUFFER_SIZE + 1);
-		s->bytes = read(fd, s->buff, BUFFER_SIZE);
-	}
-	if (!s->bytes)
-		return(ft_end(s));
-	return (1);
-}
-*/
 
 char	*ft_end(t_buffer *s)
 {
