@@ -102,32 +102,3 @@ int	ft_buffer_up(int fd, t_buffer *s)
 	}
 	return (1);
 }
-
-char	*ft_end(t_buffer *s)
-{
-	if (s->eof == 1)
-	{
-		if (s->buff)
-		{
-			free(s->buff);
-			s->buff = NULL;
-		}
-		if (s->next)
-		{
-			free(s->next);
-			s->next = NULL;
-		}
-	}
-	s->eof = 1;
-	if (s->next && (!s->next[0] || s->next[s->n] == '\n'))
-	{
-		free(s->next);
-		s->next = NULL;
-		if (s->buff)
-		{
-			free(s->buff);
-			s->buff = NULL;
-		}
-	}
-	return (s->next);
-}
