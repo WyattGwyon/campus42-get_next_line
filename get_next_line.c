@@ -31,16 +31,12 @@ int	ft_phases(int fd, t_buffer *s, char **next)
 {
 	if (!ft_buffer_up(fd, s) || s->bytes < 1)
 	{
-		printf("==EOF== %d", s->eof);
-		if (s->bytes == 0 && s->eof != 1)
+		if (s->bytes == 0)
 		{
-			s->eof = 1;
 			free(s->buff);
 			s->buff = NULL;
-			printf("==1st EOF %s==", *next);
 			return (1);
 		}
-		printf("==2nd EOF %s==", *next);
 		ft_nullout(s, next);
 		return (-1);
 	}
@@ -62,7 +58,6 @@ char	*get_next_line(int fd)
 
 	next = NULL;
 	n = 0;
-	s.eof = 0;
 	status = ft_phases(fd, &s, &next);
 	if (status != 0)
 		return (next);

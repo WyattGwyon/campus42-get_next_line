@@ -29,7 +29,6 @@ typedef struct s_buffer
 	size_t	b;
 	ssize_t	bytes;
 	size_t	len;
-	int		eof;
 }	t_buffer;
 
 char	*get_next_line(int fd);
