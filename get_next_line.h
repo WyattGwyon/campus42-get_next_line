@@ -26,10 +26,8 @@
 typedef struct s_buffer
 {
 	char	*buff;
-	char	*next;
 	size_t	b;
 	ssize_t	bytes;
-	size_t	n;
 	size_t	len;
 	int		eof;
 }	t_buffer;
