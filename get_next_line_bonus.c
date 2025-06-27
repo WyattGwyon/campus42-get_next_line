@@ -105,10 +105,10 @@ char	*get_next_line(int fd)
 
 // 	newln2 = get_next_line(fd2);
 // 	printf("0123456789\n%s\n", newln2);
-	
+
 // 	newln = get_next_line(fd);
 // 	printf("bbbbbbbbbb\n%s\n", newln);
-	
+
 // 	newln2 = get_next_line(fd2);
 // 	printf("012345678\n%s\n", newln2);
 // 	//s.re = 1;
@@ -124,32 +124,32 @@ char	*get_next_line(int fd)
 // 	printf("ERRORNULL >%s<\n", newln);
 // 	//s.re = 0;
 // 	close(fd);
-	
+
 // 	newln2 = get_next_line(fd2);
 // 	printf("90123456789\n%s\n", newln2);
-	
+
 // 	fd = open("name", O_RDONLY);
 // 	newln = get_next_line(fd);
 // 	printf("aaaaaaaaaa\n%s\n", newln);
-	
+
 // 	newln2 = get_next_line(fd2);
 // 	printf("0123456789\n%s\n", newln2);
-	
+
 // 	newln = get_next_line(fd);
 // 	printf("bbbbbbbbbb\n%s\n", newln);
-	
+
 // 	newln = get_next_line(fd);
 // 	printf("cccccccccc\n%s\n", newln);
-	
+
 // 	newln2 = get_next_line(fd2);
 // 	printf("xxxx\n%s\n", newln2);
-	
+
 // 	newln2 = get_next_line(fd2);
 // 	printf("NULL >%s<\n", newln2);
-	
+
 // 	newln = get_next_line(fd);
 // 	printf("dddddddddd\n%s\n", newln);
-	
+
 // 	newln = get_next_line(fd);
 // 	printf("NULL >%s<\n", newln);
 // 	close(fd);
@@ -203,7 +203,6 @@ char	*get_next_line(int fd)
 // 	return (0);
 // }
 
-
 // void populate_expected(char *buffer, int n)
 // {
 // 	int i = 0;
@@ -216,7 +215,7 @@ char	*get_next_line(int fd)
 
 // int main(void)
 // {
-		
+
 // 		char expected[20000 + 2];
 // 		populate_expected(expected, 20000);
 // 		expected[20000] = '\n';
