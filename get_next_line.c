@@ -61,7 +61,7 @@ char	*get_next_line(int fd)
 	status = ft_phases(fd, &s, &next);
 	if (status != 0)
 		return (next);
-	while (s.buff && s.buff[s.b] != '\n')
+	while (s.buff && s.buff[s.b] && s.buff[s.b] != '\n')
 	{
 		next[n] = s.buff[s.b];
 		s.b++;
@@ -73,8 +73,9 @@ char	*get_next_line(int fd)
 		}
 		n++;
 	}
-	next[n] = s.buff[s.b];
-	return (s.b++, next);
+	if (s.buff[s.b] == '\n')
+		next[n] = s.buff[s.b];
+	return (++s.b, next);
 }
 
 // int	main(void)

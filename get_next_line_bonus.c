@@ -29,7 +29,6 @@ char	*ft_nullout(t_buffer *s, char **next, int fd)
 
 int	ft_status(int fd, t_buffer *s, char **next)
 {
-	//printf("==Status fd==: %d  ||  ",fd);
 	if (!ft_buffer_up(fd, s) || s->bytes < 1)
 	{
 		if (s->bytes == 0)
@@ -47,7 +46,6 @@ int	ft_status(int fd, t_buffer *s, char **next)
 		ft_nullout(s, next, fd);
 		return (-1);
 	}
-	//printf("X:");
 	return (0);
 }
 
@@ -63,7 +61,7 @@ char	*get_next_line(int fd)
 	status = ft_status(fd, &s, &next);
 	if (status != 0)
 		return (next);
-	while (s.buff[fd] && s.buff[fd][s.b[fd]] != '\n')
+	while (s.buff[fd] && s.buff[fd][s.b[fd]] && s.buff[fd][s.b[fd]] != '\n')
 	{
 		next[n] = s.buff[fd][s.b[fd]];
 		s.b[fd]++;
@@ -75,8 +73,9 @@ char	*get_next_line(int fd)
 		}
 		n++;
 	}
-	next[n] = s.buff[fd][s.b[fd]];
-	return (s.b[fd]++, next);
+	if (s.buff[fd][s.b[fd]] == '\n')
+		next[n] = s.buff[fd][s.b[fd]];
+	return (++s.b[fd], next);
 }
 
 // int	main(void)
